@@ -396,7 +396,7 @@ int __cdecl FancyBoxInitialize(HINSTANCE hInstance, int a2)
     {
         fancyBox.field_74 = 3;
         GetModuleFileNameA(hInstance, Filename, 0x200u);
-        FancyRegSetString("fcbox2", "runerpath", Filename);
+        //FancyRegSetString("fcbox2", "runerpath", Filename);
         FancyBoxInitObjsys(&fancyBox, hInstance, v5);
         nCmdShow = a2;
         ShowWindow(v5, 0);
@@ -576,6 +576,8 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
     int result; // eax
     struct tagMSG Msg; // [esp+0h] [ebp-1Ch] BYREF
 
+    sub_411550();
+    sub_411570();
     fancyBox.field_A8 = 1;
     if (*lpCmdLine)
         FancyBoxSaveCmdline(&fancyBox, lpCmdLine);
@@ -2274,7 +2276,7 @@ void __thiscall FancyBoxInitObjsys(FancyBox* this, HINSTANCE a2, HWND hWnd)
                 {
                     if (v6 <= 0)
                         break;
-                    v7 = *((_BYTE*)&lpPathName.capacity + v6-- + 3);
+                    v7 = Filename[--v6];
                 } while (v7 != '\\');
             }
             Filename[v6] = 0;
