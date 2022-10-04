@@ -60,3 +60,6 @@ FancyBaseDialog* __thiscall sub_405AB0(FancyBaseDialog* this);
 BOOL __stdcall DialogFunc(HWND hWnd, UINT Msg, WPARAM wParam, unsigned int lParam);
 HLOCAL __cdecl sub_4059D0(DWORD a1);
 int __thiscall sub_405AE0(void*, int, int, int, int);
+
+#undef __thiscall
+#undef this

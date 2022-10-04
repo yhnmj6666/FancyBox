@@ -82,3 +82,6 @@ char* FormatErrorMessage();
 char* GetLastErrorCStr();
 void nullsub_1();
 void __thiscall nullsub_2(void* this, int, int);
+
+#undef __thiscall
+#undef this

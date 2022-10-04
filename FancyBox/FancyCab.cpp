@@ -5,6 +5,9 @@
 
 #include <stdlib.h>
 
+#define __thiscall __fastcall
+#define this _this
+
 FancyBoxFileContent* dword_4181CC;
 FancyBoxFileContent* dword_4181D0;
 HFDI(__cdecl* MyFDICreate)(PFNALLOC pfnalloc, PFNFREE pfnfree, PFNOPEN pfnopen, PFNREAD pfnread, PFNWRITE pfnwrite, PFNCLOSE pfnclose, PFNSEEK pfnseek, int cpuType, PERF perf);
@@ -324,8 +327,8 @@ int __thiscall FancyCabInitialize(FancyCab* this, FancyBoxFileContent* a2, Fancy
         FancyCabFree(this);
     dword_4181E8 = this;
     hFDI = FDISafeCreate(
-        (PFNALLOC)(operator new),
-        (PFNFREE)(operator delete),
+        (PFNALLOC)(malloc),
+        (PFNFREE)(free),
         (PFNOPEN)pfnopen,
         (PFNREAD)pfnread,
         pfnwrite,

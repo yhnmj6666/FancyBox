@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define __thiscall __fastcall
+#define this _this
+
 IHttpNegotiateVtbl stru_412570 =
 {
   (HRESULT(__stdcall*)(IHttpNegotiate * This, const IID & riid, void** ppvObject)) & IHttpNegotiate_QueryInterface,

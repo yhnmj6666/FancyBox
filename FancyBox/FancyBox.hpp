@@ -6,6 +6,10 @@
 #include "FancyUpdateDialog.hpp"
 #include "CacheStore.hpp"
 
+#define __thiscall __fastcall
+#define this _this
+#define __usercall __fastcall
+
 /* 66 */
 struct FancyBox
 {
@@ -70,3 +74,6 @@ time_t __cdecl GetLastWriteTime(LPCSTR lpFileName);
 void __cdecl UpdateProgress(int, unsigned int);
 BOOL __cdecl sub_405230(char*, char*, int, int, void(__cdecl*)(int, unsigned int));
 int FancyBoxErrorMessageBox(FancyBox* a1, LPCSTR a2, ...);
+
+#undef __thiscall
+#undef this

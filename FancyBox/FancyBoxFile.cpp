@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define __thiscall __fastcall
+#define this _this
+
 //----- (004060D0) --------------------------------------------------------
 void __thiscall FancyBoxFileInitialize(FancyBoxFile* this)
 {

@@ -22,3 +22,6 @@ void __thiscall FancyLinedTextFillFromBuffer(FancyLinedText* this, char* a2);
 void __thiscall FancyLinedTextDtor(FancyLinedText* this);
 int __thiscall FancyLinedTextFillFromPath(FancyLinedText* this, char* a1);
 FancyLinedText* __thiscall FancyLinedTextRelease(FancyLinedText* this, char a2);
+
+#undef __thiscall
+#undef this

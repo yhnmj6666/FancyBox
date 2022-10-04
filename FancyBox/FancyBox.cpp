@@ -11,6 +11,9 @@
 
 #include <stdlib.h>
 
+#define __thiscall __fastcall
+#define this _this
+
 FancyBox fancyBox = {};
 char aFcrunerExe[] = "fcruner.exe"; // idb
 

@@ -4,45 +4,47 @@
 #include <string.h>
 #include <WinUser.h>
 
+#define __thiscall __fastcall
+
 char emptyString0[2] = { '\0', '\0' }; // weak
 char* emptyString = (char*)&emptyString0;
 int dword_4186F8[256]; // weak
 char byte_418AF8[16]; // weak
 
 //----- (00401000) --------------------------------------------------------
-char* __thiscall FancyStrIsEmpty(FancyStr* this)
+char* __thiscall FancyStrIsEmpty(FancyStr* This)
 {
     char* result; // eax
 
-    if (this->len < 1)
+    if (This->len < 1)
         return emptyString;
-    result = this->buffer;
-    if (!this->buffer)
+    result = This->buffer;
+    if (!This->buffer)
         return emptyString;
     return result;
 }
 
 //----- (004015B0) --------------------------------------------------------
-void __thiscall FancyStrDtor(FancyStr* this)
+void __thiscall FancyStrDtor(FancyStr* This)
 {
-    if (this->buffer)
-        free(this->buffer);
-    this->buffer = 0;
-    this->len = 0;
-    this->capacity = 0;
+    if (This->buffer)
+        free(This->buffer);
+    This->buffer = 0;
+    This->len = 0;
+    This->capacity = 0;
 }
 
 //----- (00406CF0) --------------------------------------------------------
 // Microsoft VisualC 2-14/net runtime
-void __thiscall FancyStrCtor(FancyStr* this)
+void __thiscall FancyStrCtor(FancyStr* This)
 {
-    this->buffer = 0;
-    this->len = 0;
-    this->capacity = 0;
+    This->buffer = 0;
+    This->len = 0;
+    This->capacity = 0;
 }
 
 //----- (00406D00) --------------------------------------------------------
-void __thiscall FancyStrSetCStr(FancyStr* this, const char* a2, int a3)
+void __thiscall FancyStrSetCStr(FancyStr* This, const char* a2, int a3)
 {
     int v3; // edi
     char* v5; // eax
@@ -52,13 +54,13 @@ void __thiscall FancyStrSetCStr(FancyStr* this, const char* a2, int a3)
     v3 = a3;
     if (a3 < 0)
         v3 = 0;
-    if (this->buffer)
-        free(this->buffer);
-    this->capacity = v3 + 8;
-    this->buffer = 0;
-    this->len = 0;
+    if (This->buffer)
+        free(This->buffer);
+    This->capacity = v3 + 8;
+    This->buffer = 0;
+    This->len = 0;
     v5 = (char*)operator new(v3 + 10);
-    this->buffer = v5;
+    This->buffer = v5;
     if (a2 && v3 > 0)
     {
         v6 = strlen(a2);
@@ -68,8 +70,8 @@ void __thiscall FancyStrSetCStr(FancyStr* this, const char* a2, int a3)
             if (v6 >= v3)
                 v7 = v3;
             qmemcpy(v5, a2, v7);
-            this->buffer[v7] = 0;
-            this->len = v7;
+            This->buffer[v7] = 0;
+            This->len = v7;
         }
     }
     else
@@ -79,18 +81,18 @@ void __thiscall FancyStrSetCStr(FancyStr* this, const char* a2, int a3)
 }
 
 //----- (00406DA0) --------------------------------------------------------
-int __thiscall FancyStrFindNextChar(FancyStr* this, char a2, int a3)
+int __thiscall FancyStrFindNextChar(FancyStr* This, char a2, int a3)
 {
     int len; // edx
     char* buffer; // edx
     char v5; // cl
     char* v6; // eax
 
-    len = this->len;
+    len = This->len;
     if (len < 1 || a3 >= len)
         return -1;
-    buffer = this->buffer;
-    v5 = this->buffer[a3];
+    buffer = This->buffer;
+    v5 = This->buffer[a3];
     v6 = &buffer[a3];
     if (!v5)
         return -1;
@@ -146,18 +148,18 @@ char* __usercall find_cstr(char* result, const char* a2)
 }
 
 //----- (00406E40) --------------------------------------------------------
-int __thiscall FancyStrFind(FancyStr* this, const char* a2, int start)
+int __thiscall FancyStrFind(FancyStr* This, const char* a2, int start)
 {
     int len; // edx
     char* buffer; // esi
     int v6; // eax
     char* cstr; // eax
 
-    len = this->len;
+    len = This->len;
     if (len < 1)
         return -1;
-    buffer = this->buffer;
-    if (!this->buffer || !a2)
+    buffer = This->buffer;
+    if (!This->buffer || !a2)
         return -1;
     v6 = start;
     if (start < 0)
@@ -169,18 +171,18 @@ int __thiscall FancyStrFind(FancyStr* this, const char* a2, int start)
 }
 
 //----- (00406E90) --------------------------------------------------------
-signed int __thiscall FancyStrToLower(FancyStr* this)
+signed int __thiscall FancyStrToLower(FancyStr* This)
 {
     signed int result; // eax
 
-    result = this->len;
+    result = This->len;
     if (result >= 1)
-        return CharLowerBuffA(this->buffer, this->len);
+        return CharLowerBuffA(This->buffer, This->len);
     return result;
 }
 
 //----- (00406EB0) --------------------------------------------------------
-void __thiscall FancyStrInsertCStrAt(FancyStr* this, int a2, const char* a3)
+void __thiscall FancyStrInsertCStrAt(FancyStr* This, int a2, const char* a3)
 {
     signed int v4; // ebp
     int len; // eax
@@ -198,27 +200,27 @@ void __thiscall FancyStrInsertCStrAt(FancyStr* this, int a2, const char* a3)
             v4 = strlen(a3);
             if (v4 >= 1)
             {
-                len = this->len;
+                len = This->len;
                 if (a2 >= len)
                     v6 = a2 + v4;
                 else
                     v6 = v4 + len;
-                if (v6 >= this->capacity)
+                if (v6 >= This->capacity)
                 {
-                    buffer = this->buffer;
-                    v11 = this->buffer;
-                    this->buffer = 0;
-                    FancyStrSetCStr(this, v11, v6 + 1);
+                    buffer = This->buffer;
+                    v11 = This->buffer;
+                    This->buffer = 0;
+                    FancyStrSetCStr(This, v11, v6 + 1);
                     if (buffer)
                         free(buffer);
                 }
-                v8 = this->len;
+                v8 = This->len;
                 if (a2 < v8)
-                    memcpy(&this->buffer[v4 + a2], &this->buffer[a2], v8 - a2 + 1);
-                qmemcpy(&this->buffer[a2], a3, v4);
-                v9 = this->buffer;
-                v10 = v4 + this->len;
-                this->len = v10;
+                    memcpy(&This->buffer[v4 + a2], &This->buffer[a2], v8 - a2 + 1);
+                qmemcpy(&This->buffer[a2], a3, v4);
+                v9 = This->buffer;
+                v10 = v4 + This->len;
+                This->len = v10;
                 v9[v10] = 0;
             }
         }
@@ -226,7 +228,7 @@ void __thiscall FancyStrInsertCStrAt(FancyStr* this, int a2, const char* a3)
 }
 
 //----- (00406F70) --------------------------------------------------------
-void __thiscall FancyStrInsert(FancyStr* this, int a2, char a3)
+void __thiscall FancyStrInsert(FancyStr* This, int a2, char a3)
 {
     int len; // eax
     int v5; // eax
@@ -238,75 +240,75 @@ void __thiscall FancyStrInsert(FancyStr* this, int a2, char a3)
 
     if (a2 >= 0)
     {
-        len = this->len;
+        len = This->len;
         if (a2 >= len)
             v5 = a2 + 1;
         else
             v5 = len + 1;
-        if (v5 >= this->capacity)
+        if (v5 >= This->capacity)
         {
-            buffer = this->buffer;
-            v10 = this->buffer;
-            this->buffer = 0;
-            FancyStrSetCStr(this, v10, v5 + 1);
+            buffer = This->buffer;
+            v10 = This->buffer;
+            This->buffer = 0;
+            FancyStrSetCStr(This, v10, v5 + 1);
             if (buffer)
                 free(buffer);
         }
-        v7 = this->len;
+        v7 = This->len;
         if (a2 < v7)
-            memcpy(&this->buffer[a2 + 1], &this->buffer[a2], v7 - a2 + 1);
-        this->buffer[a2] = a3;
-        v8 = this->buffer;
-        v9 = this->len + 1;
-        this->len = v9;
+            memcpy(&This->buffer[a2 + 1], &This->buffer[a2], v7 - a2 + 1);
+        This->buffer[a2] = a3;
+        v8 = This->buffer;
+        v9 = This->len + 1;
+        This->len = v9;
         v8[v9] = 0;
     }
 }
 
 //----- (00406FF0) --------------------------------------------------------
-void __thiscall FancyStrAppend(FancyStr* this, FancyStr* a2)
+void __thiscall FancyStrAppend(FancyStr* This, FancyStr* a2)
 {
-    FancyStrInsertCStrAt(this, this->len, a2->buffer);
+    FancyStrInsertCStrAt(This, This->len, a2->buffer);
 }
 
 //----- (00407010) --------------------------------------------------------
-void __thiscall FancyStrAppendCStr(FancyStr* this, const char* a2)
+void __thiscall FancyStrAppendCStr(FancyStr* This, const char* a2)
 {
-    FancyStrInsertCStrAt(this, this->len, a2);
+    FancyStrInsertCStrAt(This, This->len, a2);
 }
 
 //----- (00407030) --------------------------------------------------------
-char __thiscall FancyStrCharAt(FancyStr* this, int a2)
+char __thiscall FancyStrCharAt(FancyStr* This, int a2)
 {
-    if (a2 >= 0 && a2 < this->len && this->buffer)
-        return this->buffer[a2];
+    if (a2 >= 0 && a2 < This->len && This->buffer)
+        return This->buffer[a2];
     else
         return 0;
 }
 
 //----- (00407050) --------------------------------------------------------
-BOOL __thiscall FancyStrEquals(FancyStr* this, const char* a2)
+BOOL __thiscall FancyStrEquals(FancyStr* This, const char* a2)
 {
-    return this->buffer && a2 && this->len >= 1 && strcmp(this->buffer, a2) == 0;
+    return This->buffer && a2 && This->len >= 1 && strcmp(This->buffer, a2) == 0;
 }
 
 //----- (004070C0) --------------------------------------------------------
-BOOL __thiscall FancyStrNotEquals(FancyStr* this, FancyStr* a2)
+BOOL __thiscall FancyStrNotEquals(FancyStr* This, FancyStr* a2)
 {
     int len; // eax
 
-    len = this->len;
-    return len < 1 || len != a2->len || strcmp(this->buffer, a2->buffer) != 0;
+    len = This->len;
+    return len < 1 || len != a2->len || strcmp(This->buffer, a2->buffer) != 0;
 }
 
 //----- (00407130) --------------------------------------------------------
-BOOL __thiscall FancyStrNotEqual(FancyStr* this, const char* a2)
+BOOL __thiscall FancyStrNotEqual(FancyStr* This, const char* a2)
 {
-    return !FancyStrEquals(this, a2);
+    return !FancyStrEquals(This, a2);
 }
 
 //----- (00407150) --------------------------------------------------------
-void __thiscall FancyStrReplace(FancyStr* this, const char* a2, const char* a3)
+void __thiscall FancyStrReplace(FancyStr* This, const char* a2, const char* a3)
 {
     int v4; // esi
     unsigned int v5; // ebp
@@ -332,7 +334,7 @@ void __thiscall FancyStrReplace(FancyStr* this, const char* a2, const char* a3)
     {
         if (a2)
         {
-            if (this->len >= 1)
+            if (This->len >= 1)
             {
                 v4 = strlen(a2);
                 v20 = v4;
@@ -344,7 +346,7 @@ void __thiscall FancyStrReplace(FancyStr* this, const char* a2, const char* a3)
                     {
                         if ((int)(v4 - v5) >= 0)
                         {
-                            for (i = find_cstr(this->buffer, a2); i; i = find_cstr(&i[v5], a2))
+                            for (i = find_cstr(This->buffer, a2); i; i = find_cstr(&i[v5], a2))
                             {
                                 qmemcpy(i, a3, v5);
                                 ++v16;
@@ -354,33 +356,33 @@ void __thiscall FancyStrReplace(FancyStr* this, const char* a2, const char* a3)
                         {
                             v9 = v5 - v4;
                             v19 = v9;
-                            cstr = find_cstr(this->buffer, a2);
+                            cstr = find_cstr(This->buffer, a2);
                             if (cstr)
                             {
                                 while (1)
                                 {
-                                    capacity = this->capacity;
-                                    v12 = cstr - this->buffer;
-                                    buffer = this->buffer;
-                                    v13 = v9 + this->len;
-                                    this->len = v13;
+                                    capacity = This->capacity;
+                                    v12 = cstr - This->buffer;
+                                    buffer = This->buffer;
+                                    v13 = v9 + This->len;
+                                    This->len = v13;
                                     if (v13 < capacity)
                                     {
                                         memcpy(&cstr[v5], &cstr[v20], v13 - v12 - v5);
                                     }
                                     else
                                     {
-                                        this->capacity = v9 + v13 + 4 * v9 + 8;
+                                        This->capacity = v9 + v13 + 4 * v9 + 8;
                                         v14 = (char*)operator new(v9 + v13 + 4 * v9 + 9);
-                                        this->buffer = v14;
+                                        This->buffer = v14;
                                         qmemcpy(v14, buffer, v12);
-                                        qmemcpy(&this->buffer[v12 + v5], &buffer[v12 + v20], this->len - v12 - v5);
+                                        qmemcpy(&This->buffer[v12 + v5], &buffer[v12 + v20], This->len - v12 - v5);
                                         free(buffer);
                                     }
-                                    qmemcpy(&this->buffer[v12], a3, v5);
-                                    this->buffer[this->len] = 0;
+                                    qmemcpy(&This->buffer[v12], a3, v5);
+                                    This->buffer[This->len] = 0;
                                     ++v16;
-                                    cstr = find_cstr(&this->buffer[v12 + v5], a2);
+                                    cstr = find_cstr(&This->buffer[v12 + v5], a2);
                                     if (!cstr)
                                         break;
                                     v9 = v19;
@@ -390,21 +392,21 @@ void __thiscall FancyStrReplace(FancyStr* this, const char* a2, const char* a3)
                     }
                     else
                     {
-                        v6 = find_cstr(this->buffer, a2);
+                        v6 = find_cstr(This->buffer, a2);
                         if (v6)
                         {
                             while (1)
                             {
-                                v17 = v6 - this->buffer;
-                                qmemcpy(&v6[v5], &v6[v4], this->len - v17 - v4);
+                                v17 = v6 - This->buffer;
+                                qmemcpy(&v6[v5], &v6[v4], This->len - v17 - v4);
                                 if (v5)
                                     qmemcpy(v6, a3, v5);
-                                v7 = this->buffer;
-                                v8 = this->len - v18;
-                                this->len = v8;
+                                v7 = This->buffer;
+                                v8 = This->len - v18;
+                                This->len = v8;
                                 v7[v8] = 0;
                                 ++v16;
-                                v6 = find_cstr(&this->buffer[v17 + v5], a2);
+                                v6 = find_cstr(&This->buffer[v17 + v5], a2);
                                 if (!v6)
                                     break;
                                 v4 = v20;
@@ -418,7 +420,7 @@ void __thiscall FancyStrReplace(FancyStr* this, const char* a2, const char* a3)
 }
 
 //----- (004073D0) --------------------------------------------------------
-void __thiscall FancyStrRemove(FancyStr* this, int index, int size)
+void __thiscall FancyStrRemove(FancyStr* This, int index, int size)
 {
     int len; // ecx
     int v5; // edx
@@ -427,17 +429,17 @@ void __thiscall FancyStrRemove(FancyStr* this, int index, int size)
 
     if (index >= 0)
     {
-        len = this->len;
+        len = This->len;
         if (index < len)
         {
-            if (this->buffer)
+            if (This->buffer)
             {
                 v5 = size;
                 if (index + size >= len)
                 {
                     if (index < 1)
                     {
-                        FancyStrDtor(this);
+                        FancyStrDtor(This);
                         return;
                     }
                     if (index + size >= len)
@@ -445,11 +447,11 @@ void __thiscall FancyStrRemove(FancyStr* this, int index, int size)
                 }
                 if (v5 >= 1)
                 {
-                    if (this->len - index - v5 > 0)
-                        qmemcpy(&this->buffer[index], &this->buffer[index + v5], this->len - index - v5);
-                    buffer = this->buffer;
-                    v7 = this->len - v5;
-                    this->len = v7;
+                    if (This->len - index - v5 > 0)
+                        qmemcpy(&This->buffer[index], &This->buffer[index + v5], This->len - index - v5);
+                    buffer = This->buffer;
+                    v7 = This->len - v5;
+                    This->len = v7;
                     buffer[v7] = 0;
                 }
             }
@@ -546,34 +548,34 @@ int __cdecl Cstr_to_int_hex(char* a1)
 // 4186F8: using guessed type int dword_4186F8[256];
 
 //----- (00407500) --------------------------------------------------------
-void __thiscall FancyStrResize(FancyStr* this, int a2)
+void __thiscall FancyStrResize(FancyStr* This, int a2)
 {
     int v3; // edi
     char* v4; // eax
 
-    if (this->len <= a2)
+    if (This->len <= a2)
     {
         v3 = a2;
         if (a2 < 0)
             v3 = 0;
-        if (this->buffer)
-            free(this->buffer);
-        this->capacity = v3 + 8;
-        this->buffer = 0;
-        this->len = 0;
+        if (This->buffer)
+            free(This->buffer);
+        This->capacity = v3 + 8;
+        This->buffer = 0;
+        This->len = 0;
         v4 = (char*)operator new(v3 + 10);
-        this->buffer = v4;
+        This->buffer = v4;
         *v4 = 0;
     }
     else
     {
-        this->buffer[a2] = 0;
-        this->len = strlen(this->buffer);
+        This->buffer[a2] = 0;
+        This->len = strlen(This->buffer);
     }
 }
 
 //----- (00407570) --------------------------------------------------------
-char* __thiscall FancyStrAlloc(FancyStr* this, int a2)
+char* __thiscall FancyStrAlloc(FancyStr* This, int a2)
 {
     int v2; // edi
     char* v4; // eax
@@ -581,82 +583,82 @@ char* __thiscall FancyStrAlloc(FancyStr* this, int a2)
     v2 = a2;
     if (a2 < 0)
         v2 = 0;
-    if (this->buffer)
-        free(this->buffer);
-    this->capacity = v2 + 8;
-    this->buffer = 0;
-    this->len = 0;
+    if (This->buffer)
+        free(This->buffer);
+    This->capacity = v2 + 8;
+    This->buffer = 0;
+    This->len = 0;
     v4 = (char*)operator new(v2 + 10);
-    this->buffer = v4;
+    This->buffer = v4;
     *v4 = 0;
-    return this->buffer;
+    return This->buffer;
 }
 
 //----- (004075C0) --------------------------------------------------------
-void __thiscall FancyStrShrink(FancyStr* this)
+void __thiscall FancyStrShrink(FancyStr* This)
 {
-    this->len = strlen(this->buffer);
+    This->len = strlen(This->buffer);
 }
 
 //----- (004075E0) --------------------------------------------------------
-int __thiscall FancyStrTrimTailChar(FancyStr* this, char a2)
+int __thiscall FancyStrTrimTailChar(FancyStr* This, char a2)
 {
     int len; // esi
     char* buffer; // edx
 
-    len = this->len;
+    len = This->len;
     if (len < 1)
         return 0;
-    buffer = this->buffer;
-    if (!this->buffer || buffer[len - 1] != a2)
+    buffer = This->buffer;
+    if (!This->buffer || buffer[len - 1] != a2)
         return 0;
-    this->len = len - 1;
+    This->len = len - 1;
     buffer[len - 1] = 0;
     return 1;
 }
 
 //----- (00407620) --------------------------------------------------------
-BOOL __thiscall FancyStrStartsWith(FancyStr* this, const char* a2)
+BOOL __thiscall FancyStrStartsWith(FancyStr* This, const char* a2)
 {
     int v3; // eax
     char v5[60]; // [esp+8h] [ebp-3Ch] BYREF
 
     v3 = strlen(a2);
-    if (this->len < v3 || v3 >= 0x28)
+    if (This->len < v3 || v3 >= 0x28)
         return 0;
-    qmemcpy(v5, this->buffer, v3);
+    qmemcpy(v5, This->buffer, v3);
     v5[v3] = 0;
     return strcmp(v5, a2) == 0;
 }
 // 407620: using guessed type char var_3C[60];
 
 //----- (004076C0) --------------------------------------------------------
-FancyStr* __thiscall FancyStrSetStr(FancyStr* this, const char** a2)
+FancyStr* __thiscall FancyStrSetStr(FancyStr* This, const char** a2)
 {
     const char* v3; // edx
     bool v4; // zf
 
-    this->buffer = 0;
-    this->len = 0;
-    this->capacity = 0;
+    This->buffer = 0;
+    This->len = 0;
+    This->capacity = 0;
     v3 = *a2;
     v4 = *a2 == 0;
-    this->buffer = 0;
-    this->len = 0;
-    this->capacity = 0;
+    This->buffer = 0;
+    This->len = 0;
+    This->capacity = 0;
     if (!v4)
-        FancyStrSetCStr(this, v3, strlen(v3));
-    return this;
+        FancyStrSetCStr(This, v3, strlen(v3));
+    return This;
 }
 
 //----- (00407700) --------------------------------------------------------
-void __thiscall FancyStrCtorFromCStr(FancyStr* this, char* a2)
+void __thiscall FancyStrCtorFromCStr(FancyStr* This, char* a2)
 {
-    this->buffer = 0;
-    this->len = 0;
-    this->capacity = 0;
+    This->buffer = 0;
+    This->len = 0;
+    This->capacity = 0;
     if (a2)
-        FancyStrSetCStr(this, a2, strlen(a2));
+        FancyStrSetCStr(This, a2, strlen(a2));
 }
 
 //----- (00407740) --------------------------------------------------------
@@ -676,34 +678,34 @@ void FancyStrSetVAStr(FancyStr* a1, LPCSTR arg4, ...)
 }
 
 //----- (004077B0) --------------------------------------------------------
-void __thiscall FancyStrSet(FancyStr* this, const char** a2)
+void __thiscall FancyStrSet(FancyStr* This, const char** a2)
 {
     const char* v2; // edi
 
     v2 = *a2;
-    if (this->buffer)
-        free(this->buffer);
-    this->buffer = 0;
-    this->len = 0;
-    this->capacity = 0;
+    if (This->buffer)
+        free(This->buffer);
+    This->buffer = 0;
+    This->len = 0;
+    This->capacity = 0;
     if (v2)
-        FancyStrSetCStr(this, v2, strlen(v2));
+        FancyStrSetCStr(This, v2, strlen(v2));
 }
 
 //----- (00407800) --------------------------------------------------------
-void __thiscall FancyStrFromCStr(FancyStr* this, const char* a2)
+void __thiscall FancyStrFromCStr(FancyStr* This, const char* a2)
 {
-    if (this->buffer)
-        free(this->buffer);
-    this->buffer = 0;
-    this->len = 0;
-    this->capacity = 0;
+    if (This->buffer)
+        free(This->buffer);
+    This->buffer = 0;
+    This->len = 0;
+    This->capacity = 0;
     if (a2)
-        FancyStrSetCStr(this, a2, strlen(a2));
+        FancyStrSetCStr(This, a2, strlen(a2));
 }
 
 //----- (00407850) --------------------------------------------------------
-int __thiscall FancyStrSubstring(FancyStr* this, FancyStr* a2, char separator, char a4, int a5)
+int __thiscall FancyStrSubstring(FancyStr* This, FancyStr* a2, char separator, char a4, int a5)
 {
     int len; // edx
     int result; // eax
@@ -730,21 +732,21 @@ int __thiscall FancyStrSubstring(FancyStr* this, FancyStr* a2, char separator, c
     signed int v28; // ecx
     int v29; // ecx
 
-    len = this->len;
+    len = This->len;
     result = 0;
     if (len < 1)
         return result;
-    buffer = this->buffer;
+    buffer = This->buffer;
     do                                            // remove character before ' '
     {
         v9 = buffer[result];
         if (v9 > ' ')
             break;
         ++result;
-    } while (result < this->len);
+    } while (result < This->len);
     if (result)
     {
-        v10 = this->len;
+        v10 = This->len;
         if (v10 > 0 && buffer)
         {
             if (result < v10)
@@ -754,17 +756,17 @@ int __thiscall FancyStrSubstring(FancyStr* this, FancyStr* a2, char separator, c
                     v11 = v10 - result;
                     if (v11 > 0)
                         qmemcpy(buffer, &buffer[result], v11);
-                    v12 = this->len - result;
-                    this->len = v12;
-                    this->buffer[v12] = 0;
+                    v12 = This->len - result;
+                    This->len = v12;
+                    This->buffer[v12] = 0;
                 }
             }
             else
             {
-                FancyStrDtor(this);
+                FancyStrDtor(This);
             }
         }
-        len = this->len;
+        len = This->len;
         if (len < 1)
             return 0;
     }
@@ -776,16 +778,16 @@ int __thiscall FancyStrSubstring(FancyStr* this, FancyStr* a2, char separator, c
         {
             do
             {
-                v24 = this->buffer[v22];
+                v24 = This->buffer[v22];
                 if (v24 == '\\' && v23 != v22)
                     v23 = v22 + 1;
                 if (v24 == v9 && v23 != v22)
                     break;
                 ++v22;
-            } while (v22 < this->len);
+            } while (v22 < This->len);
         }
-        this->buffer[v22] = 0;
-        v25 = this->buffer + 1;
+        This->buffer[v22] = 0;
+        v25 = This->buffer + 1;
         if (a2->buffer)
             free(a2->buffer);
         a2->buffer = 0;
@@ -793,20 +795,20 @@ int __thiscall FancyStrSubstring(FancyStr* this, FancyStr* a2, char separator, c
         a2->capacity = 0;
         if (v25)
             FancyStrSetCStr(a2, v25, strlen(v25));
-        for (i = v22 + 1; i < this->len; ++i)
+        for (i = v22 + 1; i < This->len; ++i)
         {
-            v27 = this->buffer[i];
+            v27 = This->buffer[i];
             if (v27 == separator)
                 break;
             if (v27 == a4)
                 break;
         }
-        v19 = this->len;
+        v19 = This->len;
         v20 = i + 1;
         if (v19 <= 0)
             return 1;
-        v21 = this->buffer;
-        if (!this->buffer)
+        v21 = This->buffer;
+        if (!This->buffer)
             return 1;
         if (v20 >= v19)
             goto LABEL_38;
@@ -817,7 +819,7 @@ int __thiscall FancyStrSubstring(FancyStr* this, FancyStr* a2, char separator, c
     v15 = 0;
     do
     {
-        v16 = this->buffer[v13];
+        v16 = This->buffer[v13];
         if (v16 == '{' && v14 != '{')
             ++v15;
         if (v16 == '}' && --v15 >= 0)
@@ -829,11 +831,11 @@ int __thiscall FancyStrSubstring(FancyStr* this, FancyStr* a2, char separator, c
         v14 = separator;
     LABEL_30:
         ++v13;
-    } while (v13 < this->len);
+    } while (v13 < This->len);
     if (v13 < len)
     {
-        this->buffer[v13] = 0;
-        v18 = this->buffer;
+        This->buffer[v13] = 0;
+        v18 = This->buffer;
         if (a2->buffer)
             free(a2->buffer);
         a2->buffer = 0;
@@ -841,16 +843,16 @@ int __thiscall FancyStrSubstring(FancyStr* this, FancyStr* a2, char separator, c
         a2->capacity = 0;
         if (v18)
             FancyStrSetCStr(a2, v18, strlen(v18));
-        v19 = this->len;
+        v19 = This->len;
         v20 = v13 + 1;
         if (v19 <= 0)
             return 1;
-        v21 = this->buffer;
-        if (!this->buffer)
+        v21 = This->buffer;
+        if (!This->buffer)
             return 1;
         if (v20 >= v19)
         {
-            FancyStrDtor(this);
+            FancyStrDtor(This);
             return 1;
         }
     LABEL_66:
@@ -859,15 +861,15 @@ int __thiscall FancyStrSubstring(FancyStr* this, FancyStr* a2, char separator, c
             v28 = v19 - v20;
             if (v28 > 0)
                 qmemcpy(v21, &v21[v20], v28);
-            v29 = this->len - v20;
-            this->len = v29;
-            this->buffer[v29] = 0;
+            v29 = This->len - v20;
+            This->len = v29;
+            This->buffer[v29] = 0;
         }
         return 1;
     }
     if (a5)
         return 0;
-    v17 = this->buffer;
+    v17 = This->buffer;
     if (a2->buffer)
         free(a2->buffer);
     a2->buffer = 0;
@@ -875,19 +877,19 @@ int __thiscall FancyStrSubstring(FancyStr* this, FancyStr* a2, char separator, c
     a2->capacity = 0;
     if (v17)
         FancyStrSetCStr(a2, v17, strlen(v17));
-    if (this->buffer)
+    if (This->buffer)
         LABEL_38:
-    free(this->buffer);
-    this->buffer = 0;
-    this->len = 0;
-    this->capacity = 0;
+    free(This->buffer);
+    This->buffer = 0;
+    This->len = 0;
+    This->capacity = 0;
     return 1;
 }
 // 40786B: conditional instruction was optimized away because edx.4>=1
 // 4078F9: conditional instruction was optimized away because edx.4>=1
 
 //----- (00407B20) --------------------------------------------------------
-int __thiscall FancyStrGetInteger(FancyStr* this, int nDefault, char separator)
+int __thiscall FancyStrGetInteger(FancyStr* This, int nDefault, char separator)
 {
     char* buffer; // esi
     int v5; // edi
@@ -898,7 +900,7 @@ int __thiscall FancyStrGetInteger(FancyStr* this, int nDefault, char separator)
 
     memset(&v8, 0, sizeof(v8));
     v9 = 0;
-    if (FancyStrSubstring(this, &v8, separator, 0, 0))
+    if (FancyStrSubstring(This, &v8, separator, 0, 0))
     {
         buffer = v8.buffer;
         if (v8.len > 2 && v8.buffer)
@@ -938,7 +940,7 @@ int __thiscall FancyStrGetInteger(FancyStr* this, int nDefault, char separator)
 // 407BF9: conditional instruction was optimized away because %var_14.4>=3
 
 //----- (00407C80) --------------------------------------------------------
-FancyStr* __thiscall FancyStrSubString(FancyStr* this, FancyStr* a2, int a3, int a4)
+FancyStr* __thiscall FancyStrSubString(FancyStr* This, FancyStr* a2, int a3, int a4)
 {
     int len; // edx
     FancyStr* result; // eax
@@ -952,7 +954,7 @@ FancyStr* __thiscall FancyStrSubString(FancyStr* this, FancyStr* a2, int a3, int
     int v14; // [esp+20h] [ebp-4h]
 
     memset(&v13, 0, sizeof(v13));
-    len = this->len;
+    len = This->len;
     v14 = 1;
     if (len >= 1)
     {
@@ -967,11 +969,11 @@ FancyStr* __thiscall FancyStrSubString(FancyStr* this, FancyStr* a2, int a3, int
         if (v8 > 0)
         {
             v10 = v7 + v8;
-            v11 = &this->buffer[v7 + v8];
+            v11 = &This->buffer[v7 + v8];
             v12 = *v11;
             *v11 = 0;
-            FancyStrFromCStr(&v13, &this->buffer[v7]);
-            this->buffer[v10] = v12;
+            FancyStrFromCStr(&v13, &This->buffer[v7]);
+            This->buffer[v10] = v12;
             v9 = a2;
             FancyStrSetStr(a2, (const char**)&v13.buffer);
             LOBYTE(v14) = 0;

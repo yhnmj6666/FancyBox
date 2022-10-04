@@ -20,6 +20,10 @@ struct CacheStore
 CacheStore* __thiscall CacheStoreInitialize(CacheStore* this);
 void __thiscall EnsureCache(CacheStore* this, const char* a2);
 
-void __stdcall EnsureDirectory(LPCSTR);
+// Done
+void EnsureDirectory(LPCSTR);
 BOOL __stdcall TestWriteToPath(char*);
 void __stdcall RemoveEmptyDirectoryRecursively(LPCSTR);
+
+#undef __thiscall
+#undef this

@@ -28,3 +28,6 @@ BOOL __cdecl Time_tToFileTime(time_t, LPFILETIME lpFileTime);
 time_t __thiscall FileTimeToTime_t(FILETIME* lpFileTime);
 BOOL __cdecl FancySetFileTime(LPCSTR lpFileName, time_t);
 void __cdecl GetPathAndFilenameFromCstr(FancyStr*, FancyStr*, char*);
+
+#undef __thiscall
+#undef this

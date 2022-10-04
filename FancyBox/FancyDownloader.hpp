@@ -4,6 +4,10 @@
 
 #include "FancyStr.hpp"
 
+#define __thiscall __fastcall
+#define this _this
+#define __usercall __fastcall
+
 struct FancyDownloader;
 
 /* 230 */
@@ -73,3 +77,6 @@ void __thiscall FancyDownloaderOpen(FancyDownloader* this);
 
 time_t __cdecl SystemTimeToTime_t(SYSTEMTIME SystemTime);
 char* __cdecl TrimPath(const char*);
+
+#undef __thiscall
+#undef this

@@ -2,6 +2,9 @@
 #include "FancyBoxFile.hpp"
 #include "common.hpp"
 
+#define __thiscall __fastcall
+#define this _this
+
 //----- (00406700) --------------------------------------------------------
 void __thiscall FancyBoxFileContentCtor(FancyBoxFileContent* this)
 {

@@ -37,3 +37,6 @@ void __thiscall FancyCabDtor(FancyCab* this);
 int __thiscall FancyCabExtract(FancyCab* this, int a2);
 FancyCab* __thiscall FancyCabDtor2(FancyCab* this, char);
 int __thiscall FancyCabInitialize(FancyCab* this, FancyBoxFileContent* a2, FancyBoxFileContent* a3);
+
+#undef __thiscall
+#undef this

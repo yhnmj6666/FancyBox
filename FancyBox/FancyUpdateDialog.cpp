@@ -5,6 +5,9 @@
 #include <commctrl.h>
 #include <stdlib.h>
 
+#define __thiscall __fastcall
+#define this _this
+
 FancyBaseDialogVtbl stru_412618 = {
     (void(__thiscall*)(FancyBaseDialog * _this)) &nullsub_1,
     &sub_405C70,

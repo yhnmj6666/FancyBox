@@ -25,3 +25,6 @@ unsigned int __thiscall pfnwriteInternal(FancyBoxFileContent* this, const void* 
 BOOL __thiscall FancyBoxFileContentWrite(FancyBoxFileContent* this, FancyBoxFile* a2);
 int __thiscall pfnseekInternal(FancyBoxFileContent* this, int a2, int a3);
 void __thiscall FancyBoxFileContentDtor(FancyBoxFileContent* this);
+
+#undef __thiscall
+#undef this

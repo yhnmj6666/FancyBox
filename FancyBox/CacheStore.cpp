@@ -5,6 +5,9 @@
 
 #include <stdio.h>
 
+#define __thiscall __fastcall
+#define this _this
+
 //----- (004022A0) --------------------------------------------------------
 CacheStore* __thiscall CacheStoreInitialize(CacheStore* this)
 {
@@ -193,107 +196,61 @@ void __thiscall EnsureCache(CacheStore* this, const char* a2)
     FancyStrDtor(&lpRootPathName);
 }
 
-//----- (00402330) --------------------------------------------------------
-void __stdcall EnsureDirectory(LPCSTR lpString2)
+void EnsureDirectory(LPCSTR directory)
 {
-    signed int v1; // eax
+    int v1; // eax
     int v2; // edi
-    signed int i; // ecx
-    char v4; // cl
-    char* v5; // eax
-    void(__stdcall * fSetCurrentDirectoryA)(LPCSTR); // ebp
-    FancyStr* v7; // esi
-    FancyStr* v8; // esi
-    int v9; // edi
-    char* v10; // eax
-    char* v11; // eax
-    FancyStr lpPathName; // [esp+0h] [ebp-484h] BYREF
-    struct _SECURITY_ATTRIBUTES SecurityAttributes; // [esp+Ch] [ebp-478h] BYREF
-    char String1[260]; // [esp+18h] [ebp-46Ch] BYREF
-    CHAR Buffer[260]; // [esp+11Ch] [ebp-368h] BYREF
-    FancyStr v16[50]; // [esp+220h] [ebp-264h] BYREF
-    int v17; // [esp+480h] [ebp-4h]
+    FPPString lpPathName; // [esp+0h] [ebp-484h] BYREF
+    char _diretory[260]; // [esp+18h] [ebp-46Ch] BYREF
+    char current_dir[260]; // [esp+11Ch] [ebp-368h] BYREF
+    FPPString v16[50]; // [esp+220h] [ebp-264h] BYREF
 
-    lstrcpyA(String1, lpString2);
-    v1 = strlen(String1) - 1;
+    lstrcpyA(_diretory, directory);
+    v1 = strlen(_diretory) - 1;
     v2 = 0;
-    for (i = 0; i < v1; ++i)
+    for (int i = 0; i < v1; ++i)
     {
-        if (String1[i] == '/')
-            String1[i] = '\\';
+        if (_diretory[i] == '/')
+            _diretory[i] = '\\';
     }
     for (; v1 > 2; --v1)
     {
-        if (String1[v1] == '\\')
+        if (_diretory[v1] == '\\')
             break;
     }
-    v4 = String1[v1];
-    v5 = &String1[v1];
-    if (v4 == '\\')
+    if (_diretory[v1] == '\\')
     {
-        *v5 = 0;
-        GetCurrentDirectoryA(0x104u, Buffer);
-        fSetCurrentDirectoryA = (void(__stdcall*)(LPCSTR))SetCurrentDirectoryA;
-        if (SetCurrentDirectoryA(String1))
+        _diretory[v1] = 0;
+        GetCurrentDirectoryA(sizeof(current_dir), current_dir);
+        if (SetCurrentDirectoryA(_diretory))
         {
-            SetCurrentDirectoryA(Buffer);
+            SetCurrentDirectoryA(current_dir);
         }
         else
         {
-            FancyStrCtor(&lpPathName);
-            v17 = 0;
-            vector_constructor(
-                (char*)v16,
-                0xCu,
-                50,
-                (void(__thiscall*)(void*))FancyStrCtor,
-                (void(__thiscall*)(void*))FancyStrDtor);
-            LOBYTE(v17) = 1;
-            FancyStrFromCStr(&lpPathName, String1);
-            if (lpPathName.len)
+            lpPathName = FPPString(_diretory);
+            while (lpPathName.len())
             {
-                v7 = v16;
-                do
-                {
-                    FancyStrSubstring(&lpPathName, v7, '\\', 0, 0);
-                    ++v2;
-                    ++v7;
-                } while (lpPathName.len);
+                lpPathName.yield(v16[v2], '\\');
+                ++v2;
             }
-            FancyStrSet(&lpPathName, (const char**)&v16[0].buffer);
+            lpPathName = v16[0];
             if (v2 > 1)
             {
-                v8 = &v16[1];
-                v9 = v2 - 1;
-                do
+                for (int i = 1; i < v2; i++)
                 {
-                    FancyStrAppendCStr(&lpPathName, "\\");
-                    FancyStrAppend(&lpPathName, v8);
-                    if (lpPathName.len < 1 || (v10 = lpPathName.buffer) == 0)
-                        v10 = emptyString;
-                    if (!SetCurrentDirectoryA(v10))
+                    lpPathName.append("\\");
+                    lpPathName.append(v16[i].data());
+                    if (!SetCurrentDirectoryA(lpPathName.data()))
                     {
-                        SecurityAttributes.nLength = 12;
-                        SecurityAttributes.lpSecurityDescriptor = 0;
-                        SecurityAttributes.bInheritHandle = 0;
-                        if (lpPathName.len < 1 || (v11 = lpPathName.buffer) == 0)
-                            v11 = emptyString;
-                        CreateDirectoryA(v11, &SecurityAttributes);
+                        CreateDirectoryA(lpPathName.data(), NULL);
                     }
-                    ++v8;
-                    --v9;
-                } while (v9);
-                fSetCurrentDirectoryA = (void(__stdcall*)(LPCSTR))SetCurrentDirectoryA;
+                }
             }
-            fSetCurrentDirectoryA(Buffer);
-            LOBYTE(v17) = 0;
-            vector_destructor((char*)v16, 0xCu, 50, (void(__thiscall*)(void*))FancyStrDtor);
-            v17 = -1;
-            FancyStrDtor(&lpPathName);
+            SetCurrentDirectoryA(current_dir);
         }
     }
 }
-// 402330: using guessed type CHAR String1[260];
 
 
 //----- (00402600) --------------------------------------------------------

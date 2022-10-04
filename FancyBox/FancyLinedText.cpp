@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define __thiscall __fastcall
+#define this _this
+
 FancyLinedText* (__thiscall* off_412660)(FancyLinedText* this, char) = &FancyLinedTextRelease; // weak
 
 //----- (00407D80) --------------------------------------------------------
